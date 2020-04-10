@@ -1,9 +1,9 @@
 package com.monkeys.test.view.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.monkeys.test.R
+import com.monkeys.test.common.ActivityLauncher
 import com.monkeys.test.common.PreferenceManager
 import com.monkeys.test.model.Store
 import com.monkeys.test.model.StoreView
@@ -34,7 +34,6 @@ class StoreSelectionActivity : AppCompatActivity(), StoreSelectionView.StoreSele
 
     override fun onLanguageSelected(storeView: StoreView) {
         PreferenceManager.setStoreId(storeView.storeId, this)
-        val intent = Intent(this,MainActivity::class.java)
-        startActivity(intent)
+        ActivityLauncher.launchMainActivity(this)
     }
 }

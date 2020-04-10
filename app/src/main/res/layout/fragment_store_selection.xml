@@ -9,9 +9,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
+        tools:listitem="@layout/simple_list_item"
         android:layout_height="match_parent" />
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/progress"
         android:layout_width="@dimen/circular_progress_size"
         android:layout_height="@dimen/circular_progress_size"

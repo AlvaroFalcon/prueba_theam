@@ -38,9 +38,13 @@ class CategoryFragment : Fragment(), CategoryView, NetworkOperationCallback {
     ): View? {
         this.mView = inflater.inflate(R.layout.fragment_category, container, false)
         initRecyclerView()
+        initPresenter()
+        return mView
+    }
+
+    private fun initPresenter() {
         this.presenter = CategoryPresenter(this, this)
         this.presenter.handleArgs(arguments, context)
-        return mView
     }
 
     private fun initRecyclerView() {

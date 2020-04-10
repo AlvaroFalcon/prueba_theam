@@ -46,9 +46,13 @@ class LanguageSelectionFragment : Fragment(), LanguageSelectionView{
     ): View? {
         this.mView = inflater.inflate(R.layout.fragment_language_selection, container, false)
         initRecyclerView()
+        initPresenter()
+        return this.mView
+    }
+
+    private fun initPresenter(){
         presenter = LanguageSelectionPresenter(this)
         presenter.handleArgs(arguments)
-        return this.mView
     }
 
     private fun initRecyclerView(){

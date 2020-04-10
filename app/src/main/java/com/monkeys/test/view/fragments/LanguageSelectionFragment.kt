@@ -47,17 +47,8 @@ class LanguageSelectionFragment : Fragment(), LanguageSelectionView{
         this.mView = inflater.inflate(R.layout.fragment_language_selection, container, false)
         initRecyclerView()
         presenter = LanguageSelectionPresenter(this)
-        handleArguments()
+        presenter.handleArgs(arguments)
         return this.mView
-    }
-
-    private fun handleArguments() {
-        arguments?.apply {
-            if(containsKey(ARG_STORE_VIEW)){
-                presenter.storeViews = getParcelableArray(ARG_STORE_VIEW) as Array<StoreView>
-                presenter.showList()
-            }
-        }
     }
 
     private fun initRecyclerView(){

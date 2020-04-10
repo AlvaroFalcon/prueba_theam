@@ -1,8 +1,12 @@
 package com.monkeys.test.presenter
 
+import android.content.Context
+import android.content.Intent
 import com.monkeys.test.api.MagentoApiService
+import com.monkeys.test.common.PreferenceManager
 import com.monkeys.test.model.Store
 import com.monkeys.test.view.StoreSelectionView
+import com.monkeys.test.view.activities.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -10,7 +14,16 @@ import retrofit2.Response
 class StoreSelectionPresenter (val storeSelectionView: StoreSelectionView?){
     var storeList : Array<Store>? = null
 
-    fun showStores(){
+    fun initView(context: Context?){
+        if(context != null && PreferenceManager.getStoreId(context) != PreferenceManager.NO_STORE_SELECTED_VALUE){
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }else{
+            showStores()
+        }
+    }
+
+    private fun showStores(){
         storeList?.let {
             storeSelectionView?.showStoreList(it)
         } ?: retrieveStoreList()

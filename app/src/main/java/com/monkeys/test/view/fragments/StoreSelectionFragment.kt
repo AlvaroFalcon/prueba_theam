@@ -3,7 +3,6 @@ package com.monkeys.test.view.fragments
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +45,7 @@ class StoreSelectionFragment : BaseFragment(), StoreSelectionView, NetworkOperat
 
     private fun initPresenter() {
         this.presenter = StoreSelectionPresenter(this)
-        this.presenter.showStores()
+        this.presenter.initView(context)
     }
 
     private fun initRecyclerView(){

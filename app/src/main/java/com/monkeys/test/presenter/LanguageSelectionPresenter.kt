@@ -19,7 +19,7 @@ class LanguageSelectionPresenter(
         }
     }
 
-    fun showList() {
+    private fun showList() {
         this.languageSelectionView?.showLanguages(storeViews)
     }
 }

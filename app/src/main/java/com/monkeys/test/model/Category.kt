@@ -1,6 +1,11 @@
 package com.monkeys.test.model
 
-data class Category(val categoryId: Int, val name : String, val children : Array<Category>) {
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Category(val categoryId: Int, val name : String, val children : Array<Category>) :
+    Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

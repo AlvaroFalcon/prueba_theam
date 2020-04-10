@@ -20,13 +20,14 @@ class StoreSelectionPresenter (val storeSelectionView: StoreSelectionView?){
         storeSelectionView?.networkOperationCallback?.showProgress()
         MagentoApiService.create().getStores().enqueue(object : Callback<Array<Store>>{
             override fun onResponse(call: Call<Array<Store>>, response: Response<Array<Store>>) {
-                response.body()?.let {
-                    storeSelectionView?.showStoreList(it)
-                }?: storeSelectionView?.networkOperationCallback?.showError()
+                val body = response.body()
+                if(response.isSuccessful && body != null){
+                    this@StoreSelectionPresenter.storeSelectionView?.showStoreList(body)
+                }else this@StoreSelectionPresenter.storeSelectionView?.networkOperationCallback?.showError()
             }
 
             override fun onFailure(call: Call<Array<Store>>, t: Throwable) {
-                storeSelectionView?.networkOperationCallback?.showError()
+                this@StoreSelectionPresenter.storeSelectionView?.networkOperationCallback?.showError()
             }
 
         })

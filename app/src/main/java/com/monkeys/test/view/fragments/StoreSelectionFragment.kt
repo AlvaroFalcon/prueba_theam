@@ -17,7 +17,7 @@ import com.monkeys.test.presenter.StoreSelectionPresenter
 import com.monkeys.test.view.StoreSelectionView
 import kotlinx.android.synthetic.main.fragment_store_selection.view.*
 
-class StoreSelectionFragment : Fragment(), StoreSelectionView, NetworkOperationCallback {
+class StoreSelectionFragment : BaseFragment(), StoreSelectionView, NetworkOperationCallback {
     override val networkOperationCallback: NetworkOperationCallback = this
     lateinit var presenter: StoreSelectionPresenter
     private var storeSelectionListener: StoreSelectionView.StoreSelectionListener? = null
@@ -30,6 +30,11 @@ class StoreSelectionFragment : Fragment(), StoreSelectionView, NetworkOperationC
             this.storeSelectionListener = context
         }
         super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        titleRes = R.string.store_selection_title
+        super.onCreate(savedInstanceState)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {

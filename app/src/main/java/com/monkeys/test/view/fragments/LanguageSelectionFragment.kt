@@ -16,7 +16,7 @@ import com.monkeys.test.view.LanguageSelectionView
 import kotlinx.android.synthetic.main.fragment_language_selection.view.*
 
 
-class LanguageSelectionFragment : Fragment(), LanguageSelectionView{
+class LanguageSelectionFragment : BaseFragment(), LanguageSelectionView{
 
     lateinit var mView: View
     private var languageSelectionListener: LanguageSelectionView.LanguageSelectionListener? = null
@@ -39,6 +39,11 @@ class LanguageSelectionFragment : Fragment(), LanguageSelectionView{
             this.languageSelectionListener = context
         }
         super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        titleRes = R.string.language_selection_title
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

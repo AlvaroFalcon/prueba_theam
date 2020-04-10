@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_category.view.*
 /**
  * A simple [Fragment] subclass.
  */
-class CategoryFragment : Fragment(), CategoryView, NetworkOperationCallback {
+class CategoryFragment : BaseFragment(), CategoryView, NetworkOperationCallback {
     lateinit var mView: View
     lateinit var presenter: CategoryPresenter
     lateinit var adapter: CategoryAdapter
@@ -32,6 +32,10 @@ class CategoryFragment : Fragment(), CategoryView, NetworkOperationCallback {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        titleRes = R.string.categories_title
+        super.onCreate(savedInstanceState)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

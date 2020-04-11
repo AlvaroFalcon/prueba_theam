@@ -32,7 +32,7 @@ class StoreSelectionFragment : BaseFragment(), StoreSelectionView, NetworkOperat
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        titleRes = R.string.store_selection_title
+        navTitle = getString(R.string.store_selection_title)
         super.onCreate(savedInstanceState)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

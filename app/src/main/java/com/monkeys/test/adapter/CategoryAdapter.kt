@@ -9,16 +9,20 @@ import com.monkeys.test.model.Category
 import com.monkeys.test.model.Store
 import com.monkeys.test.view.CategoryView
 import kotlinx.android.synthetic.main.simple_list_item.view.*
-
-class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+enum class CategoryViewType{VERTICAL, HORIZONTAL}
+class CategoryAdapter(val viewType : CategoryViewType = CategoryViewType.VERTICAL) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     var itemList: Array<Category> = arrayOf()
     var listener: CategoryView.CategorySelectionListener? = null
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.simple_list_item,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(getView(),parent,false)
         return ViewHolder(view)
+    }
+
+    private fun getView(): Int{
+        return if(viewType == CategoryViewType.VERTICAL) R.layout.simple_list_item else R.layout.category_horizontal_list_item
     }
 
     override fun getItemCount(): Int {

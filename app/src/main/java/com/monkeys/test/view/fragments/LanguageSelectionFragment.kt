@@ -3,7 +3,6 @@ package com.monkeys.test.view.fragments
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,7 @@ class LanguageSelectionFragment : BaseFragment(), LanguageSelectionView{
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        titleRes = R.string.language_selection_title
+        navTitle = getString(R.string.language_selection_title)
         super.onCreate(savedInstanceState)
     }
 

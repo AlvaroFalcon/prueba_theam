@@ -17,14 +17,13 @@ class CategoryPresenter(
     val networkOperationCallback: NetworkOperationCallback? = null
 ) {
 
+    var category: Category? = null
     fun handleArgs(arguments: Bundle?, context: Context?) {
-        arguments?.let {
-            if (it.containsKey(ARG_CATEGORY)) {
-                this@CategoryPresenter.categoryView?.showCategories(
-                    it.getParcelableArray(
-                        ARG_CATEGORY
-                    ) as Array<Category>
-                )
+        arguments?.let { bundle ->
+            if (bundle.containsKey(ARG_CATEGORY)) {
+                category = bundle.getParcelable(ARG_CATEGORY)
+                category?.let { this@CategoryPresenter.categoryView?.showCategories(it.children) }
+
             } else if (context != null) getCategories(context) else networkOperationCallback?.showError()
         } ?: if (context != null) getCategories(context)
     }

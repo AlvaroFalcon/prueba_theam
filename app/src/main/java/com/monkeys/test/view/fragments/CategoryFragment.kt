@@ -1,8 +1,8 @@
 package com.monkeys.test.view.fragments
 
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +16,11 @@ import com.monkeys.test.presenter.CategoryPresenter
 import com.monkeys.test.view.CategoryView
 import kotlinx.android.synthetic.main.fragment_category.view.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class CategoryFragment : BaseFragment(), CategoryView, NetworkOperationCallback {
     lateinit var mView: View
     lateinit var presenter: CategoryPresenter
     lateinit var adapter: CategoryAdapter
+    var categorySelectionListener : CategoryView.CategorySelectionListener? = null
 
     companion object {
         const val ARG_CATEGORY = "ARG_CATEGORY"
@@ -32,8 +30,15 @@ class CategoryFragment : BaseFragment(), CategoryView, NetworkOperationCallback 
         }
     }
 
+    override fun onAttach(context: Context) {
+        if(context is CategoryView.CategorySelectionListener){
+            this.categorySelectionListener = context
+        }
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        titleRes = R.string.categories_title
+        navTitle = getString(R.string.categories_title)
         super.onCreate(savedInstanceState)
     }
     override fun onCreateView(
@@ -53,6 +58,7 @@ class CategoryFragment : BaseFragment(), CategoryView, NetworkOperationCallback 
 
     private fun initRecyclerView() {
         this.adapter = CategoryAdapter()
+        this.adapter.listener = this.categorySelectionListener
         this.mView.recycler_view.apply {
             layoutManager = LinearLayoutManager(this@CategoryFragment.context)
             adapter = this@CategoryFragment.adapter

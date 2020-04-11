@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.simple_list_item.view.*
 
 class StoreAdapter : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
 
-    var itemList: Array<Store> = arrayOf()
+    private var itemList: Array<Store> = arrayOf()
     var listener: StoreSelectionView.StoreSelectionListener? = null
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 

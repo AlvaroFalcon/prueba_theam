@@ -17,11 +17,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-    <androidx.recyclerview.widget.RecyclerView
+    <GridView
+        tools:listitem="@layout/product_list_item"
         android:id="@+id/product_recycler_view"
         app:layout_constraintTop_toBottomOf="@id/categories_recycler_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:numColumns="3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         />

@@ -10,9 +10,9 @@ import com.monkeys.test.model.Store
 import com.monkeys.test.view.CategoryView
 import kotlinx.android.synthetic.main.simple_list_item.view.*
 enum class CategoryViewType{VERTICAL, HORIZONTAL}
-class CategoryAdapter(val viewType : CategoryViewType = CategoryViewType.VERTICAL) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class CategoryAdapter(private val viewType : CategoryViewType = CategoryViewType.VERTICAL) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    var itemList: Array<Category> = arrayOf()
+    private var itemList: Array<Category> = arrayOf()
     var listener: CategoryView.CategorySelectionListener? = null
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 

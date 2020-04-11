@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.simple_list_item.view.*
 
 class LanguageAdapter : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
     var listener: LanguageSelectionView.LanguageSelectionListener? = null
-    var itemList: Array<StoreView> = arrayOf()
+    private var itemList: Array<StoreView> = arrayOf()
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 

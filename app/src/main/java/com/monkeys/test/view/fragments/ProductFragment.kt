@@ -25,10 +25,10 @@ import kotlinx.android.synthetic.main.fragment_product.view.*
 
 class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOperationCallback {
     override val networkOperationCallback: NetworkOperationCallback = this
-    lateinit var categoryPresenter: CategoryPresenter
+    private var categoryPresenter: CategoryPresenter? = null
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var productAdapter: ProductAdapter
-    lateinit var productPresenter: ProductPresenter
+    private var productPresenter: ProductPresenter? = null
     private lateinit var mView: View
     var categorySelectionListener: CategoryView.CategorySelectionListener? = null
 
@@ -56,24 +56,32 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
         savedInstanceState: Bundle?
     ): View? {
         this.mView = inflater.inflate(R.layout.fragment_product, container, false)
-        initCategories()
-        navTitle = categoryPresenter.category?.name
+        if (savedInstanceState == null) {
+            initCategories()
+            initProducts()
+        }
+        navTitle = categoryPresenter?.category?.name
         return mView
+    }
+
+    private fun initProducts() {
+        initProductAdapter()
+        initProductPresenter()
     }
 
     private fun initCategories() {
         initCategoriesAdapter()
         initCategoriesPresenter()
-        initProductAdapter()
-        initProductPresenter()
     }
 
     private fun initProductPresenter() {
-        this.productPresenter = ProductPresenter(this)
-        val category = categoryPresenter.category
-        if(category != null){
+        if (productPresenter == null) {
+            this.productPresenter = ProductPresenter(this)
+        }
+        val category = categoryPresenter?.category
+        if (category != null && productPresenter != null && context != null) {
             context?.let {
-                this.productPresenter.initView(category, PreferenceManager.getStoreId(it))
+                productPresenter?.initView(category, PreferenceManager.getStoreId(it))
             }
         }
     }
@@ -101,8 +109,10 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
     }
 
     private fun initCategoriesPresenter() {
-        this.categoryPresenter = CategoryPresenter(this)
-        this.categoryPresenter.handleArgs(arguments, context)
+        if(this.categoryPresenter == null){
+            this.categoryPresenter = CategoryPresenter(this)
+        }
+        this.categoryPresenter?.handleArgs(arguments, context)
     }
 
     override fun showCategories(categories: Array<Category>) {
@@ -110,15 +120,20 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
     }
 
     override fun showProducts(products: Array<Product>) {
+        hideProgress()
         productAdapter.refreshData(products)
     }
+
     override fun showProgress() {
+        mView.progress.visibility = View.VISIBLE
     }
 
     override fun showError() {
+        hideProgress()
     }
 
     override fun hideProgress() {
+        mView.progress.visibility = View.GONE
     }
 
 }

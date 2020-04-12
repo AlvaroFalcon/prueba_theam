@@ -113,6 +113,15 @@
             android:clipToPadding="false"
             android:layout_marginTop="@dimen/material_horizontal_margin"
             />
+        <Button
+            android:id="@+id/view_in_web_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/material_horizontal_margin"
+            android:text="@string/view_in_web"
+            />
     </LinearLayout>
 
 </ScrollView>

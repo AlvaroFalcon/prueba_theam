@@ -1,6 +1,9 @@
 package com.monkeys.test.view.fragments
 
 
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +21,7 @@ import com.monkeys.test.view.activities.ProductDetailActivity
 import kotlinx.android.synthetic.main.fragment_product_detail.view.*
 import kotlinx.android.synthetic.main.product_detail_content.view.*
 
-class ProductDetailFragment : BaseFragment(), ProductDetailView {
+class ProductDetailFragment : BaseFragment(), ProductDetailView, ProductDetailView.ProductViewListener {
     lateinit var presenter: ProductDetailPresenter
     lateinit var mView: View
     lateinit var sizeAdapter: SizesAdapter
@@ -43,7 +46,12 @@ class ProductDetailFragment : BaseFragment(), ProductDetailView {
         initSizeAdapter()
         initImageAdapter()
         initPresenter()
+        initProductListener()
         return mView
+    }
+
+    private fun initProductListener() {
+        this.mView.view_in_web_btn.setOnClickListener { this.showInWeb(presenter.product?.url) }
     }
 
     private fun initImageAdapter() {
@@ -87,5 +95,11 @@ class ProductDetailFragment : BaseFragment(), ProductDetailView {
     }
 
     override fun showProductNotAvailableError() {
+    }
+    override fun showInWeb(productUrl: String?) {
+        productUrl?.let {
+            val intent = Intent(ACTION_VIEW, Uri.parse(it))
+            startActivity(intent)
+        }?: showProductNotAvailableError()
     }
 }

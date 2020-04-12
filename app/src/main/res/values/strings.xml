@@ -8,5 +8,6 @@
     <string name="sizes_title">Tallas</string>
     <string name="color_title">Color</string>
     <string name="composition_title">Composición</string>
+    <string name="view_in_web">Ver en web</string>
 
 </resources>

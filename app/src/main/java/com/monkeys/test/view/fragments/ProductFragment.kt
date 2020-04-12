@@ -11,22 +11,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.monkeys.test.R
 import com.monkeys.test.adapter.CategoryAdapter
 import com.monkeys.test.adapter.CategoryViewType
+import com.monkeys.test.adapter.ProductAdapter
+import com.monkeys.test.common.NetworkOperationCallback
+import com.monkeys.test.common.PreferenceManager
 import com.monkeys.test.model.Category
 import com.monkeys.test.model.Product
 import com.monkeys.test.presenter.CategoryPresenter
+import com.monkeys.test.presenter.ProductPresenter
 import com.monkeys.test.view.CategoryView
 import com.monkeys.test.view.ProductListView
 import com.monkeys.test.view.fragments.CategoryFragment.Companion.ARG_CATEGORY
 import kotlinx.android.synthetic.main.fragment_product.view.*
 
-class ProductFragment : BaseFragment(), CategoryView, ProductListView {
+class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOperationCallback {
+    override val networkOperationCallback: NetworkOperationCallback = this
     lateinit var categoryPresenter: CategoryPresenter
     lateinit var categoryAdapter: CategoryAdapter
-    lateinit var mView: View
-    var categorySelectionListener : CategoryView.CategorySelectionListener? = null
+    lateinit var productAdapter: ProductAdapter
+    lateinit var productPresenter: ProductPresenter
+    private lateinit var mView: View
+    var categorySelectionListener: CategoryView.CategorySelectionListener? = null
 
-    companion object{
-        fun newInstance(category: Category?): ProductFragment{
+    companion object {
+        fun newInstance(category: Category?): ProductFragment {
             val productFragment = ProductFragment()
             val args = Bundle()
             category?.let {
@@ -38,7 +45,7 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView {
     }
 
     override fun onAttach(context: Context) {
-        if(context is CategoryView.CategorySelectionListener){
+        if (context is CategoryView.CategorySelectionListener) {
             this.categorySelectionListener = context
         }
         super.onAttach(context)
@@ -57,6 +64,27 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView {
     private fun initCategories() {
         initCategoriesAdapter()
         initCategoriesPresenter()
+        initProductAdapter()
+        initProductPresenter()
+    }
+
+    private fun initProductPresenter() {
+        this.productPresenter = ProductPresenter(this)
+        val category = categoryPresenter.category
+        if(category != null){
+            context?.let {
+                this.productPresenter.initView(category, PreferenceManager.getStoreId(it))
+            }
+        }
+    }
+
+    private fun initProductAdapter() {
+        context?.let {
+            productAdapter = ProductAdapter(it)
+            mView.product_grid_view.apply {
+                adapter = productAdapter
+            }
+        }
     }
 
     private fun initCategoriesAdapter() {
@@ -82,8 +110,15 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView {
     }
 
     override fun showProducts(products: Array<Product>) {
-
+        productAdapter.refreshData(products)
+    }
+    override fun showProgress() {
     }
 
+    override fun showError() {
+    }
+
+    override fun hideProgress() {
+    }
 
 }

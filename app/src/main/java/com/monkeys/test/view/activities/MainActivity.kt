@@ -1,8 +1,10 @@
 package com.monkeys.test.view.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.monkeys.test.R
+import com.monkeys.test.common.ActivityLauncher
 import com.monkeys.test.model.Category
 import com.monkeys.test.model.Product
 import com.monkeys.test.view.CategoryView
@@ -28,5 +30,6 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
     }
 
     override fun onProductSelected(product: Product) {
+        ActivityLauncher.launchProductDetailActivity(this, product)
     }
 }

@@ -1,5 +1,9 @@
 package com.monkeys.test.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Product(
     val modelId: String,
     val name: String,
@@ -16,7 +20,7 @@ data class Product(
     val currency: String,
     val images: Array<String>,
     val sizes: Array<Size>
-) {
+) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

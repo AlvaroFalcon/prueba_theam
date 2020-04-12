@@ -4,4 +4,9 @@
     <string name="language_selection_title">Idioma</string>
     <string name="store_selection_title">Tienda</string>
     <string name="product_price_eur">%d €</string>
+    <string name="description_title">Descripción</string>
+    <string name="sizes_title">Tallas</string>
+    <string name="color_title">Color</string>
+    <string name="composition_title">Composición</string>
+
 </resources>

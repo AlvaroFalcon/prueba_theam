@@ -9,26 +9,38 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import com.monkeys.test.R
 import com.monkeys.test.model.Product
+import com.monkeys.test.view.ProductListView
 import kotlinx.android.synthetic.main.product_list_item.view.*
 
-class ProductAdapter(val context: Context) : BaseAdapter() {
+class ProductAdapter(
+    val context: Context,
+    val listener: ProductListView.ProductSelectionListener?
+) : BaseAdapter() {
     private var products = arrayOf<Product>()
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
-    private val displayMetrics : DisplayMetrics = context.resources.displayMetrics
+    private val displayMetrics: DisplayMetrics = context.resources.displayMetrics
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: layoutInflater.inflate(R.layout.product_list_item, null)
         products[position].apply {
             view.title.text = this.name
-            view.price.text = parent?.context?.getString(R.string.product_price_eur, this.finalPrice)
+            view.price.text =
+                parent?.context?.getString(R.string.product_price_eur, this.finalPrice)
         }
-        if(view != null){
-            val cardMargin = context.resources.getDimension(R.dimen.card_margin)
-            val cardWidth = (displayMetrics.widthPixels / context.resources.getInteger(R.integer.product_num_columns)) - cardMargin
-            val params = LinearLayout.LayoutParams(cardWidth.toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
-            view.layoutParams = params
+        if (view != null) {
+            view.card.setOnClickListener { this.listener?.onProductSelected(products[position]) }
+            configureCardSize(view)
         }
         return view
+    }
+
+    private fun configureCardSize(view: View) {
+        val cardMargin = context.resources.getDimension(R.dimen.card_margin)
+        val cardWidth =
+            (displayMetrics.widthPixels / context.resources.getInteger(R.integer.product_num_columns)) - cardMargin
+        val params =
+            LinearLayout.LayoutParams(cardWidth.toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+        view.layoutParams = params
     }
 
     override fun getItem(position: Int): Any {
@@ -43,7 +55,7 @@ class ProductAdapter(val context: Context) : BaseAdapter() {
         return products.size
     }
 
-    fun refreshData(products : Array<Product>){
+    fun refreshData(products: Array<Product>) {
         this.products = products
         notifyDataSetChanged()
     }

@@ -31,6 +31,7 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
     private var productPresenter: ProductPresenter? = null
     private lateinit var mView: View
     var categorySelectionListener: CategoryView.CategorySelectionListener? = null
+    var productSelectionListener: ProductListView.ProductSelectionListener? = null
 
     companion object {
         fun newInstance(category: Category?): ProductFragment {
@@ -47,6 +48,9 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
     override fun onAttach(context: Context) {
         if (context is CategoryView.CategorySelectionListener) {
             this.categorySelectionListener = context
+        }
+        if(context is ProductListView.ProductSelectionListener){
+            this.productSelectionListener = context
         }
         super.onAttach(context)
     }
@@ -88,7 +92,7 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
 
     private fun initProductAdapter() {
         context?.let {
-            productAdapter = ProductAdapter(it)
+            productAdapter = ProductAdapter(it, this.productSelectionListener)
             mView.product_grid_view.apply {
                 adapter = productAdapter
             }

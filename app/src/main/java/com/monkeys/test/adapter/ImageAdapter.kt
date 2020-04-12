@@ -5,12 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.monkeys.test.R
-import com.monkeys.test.model.Size
-import kotlinx.android.synthetic.main.list_item_with_outline.view.*
+import kotlinx.android.synthetic.main.product_image_item.view.*
 
-class SizesAdapter : RecyclerView.Adapter<SizesAdapter.ViewHolder>() {
+class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
-    private var itemList: Array<Size> = arrayOf()
+    private var itemList: Array<String> = arrayOf()
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,7 +18,7 @@ class SizesAdapter : RecyclerView.Adapter<SizesAdapter.ViewHolder>() {
     }
 
     private fun getView(): Int{
-        return R.layout.list_item_with_outline
+        return R.layout.product_image_item
     }
 
     override fun getItemCount(): Int {
@@ -27,11 +26,11 @@ class SizesAdapter : RecyclerView.Adapter<SizesAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.text.text = itemList[position].name
+        holder.itemView.image.setImageResource(R.drawable.placeholder)
     }
 
-    fun refreshData(sizes: Array<Size>) {
-        this.itemList = sizes
+    fun refreshData(images: Array<String>) {
+        this.itemList = images
         notifyDataSetChanged()
     }
 }

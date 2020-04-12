@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.monkeys.test.R
+import com.monkeys.test.adapter.ImageAdapter
 import com.monkeys.test.adapter.SizesAdapter
 import com.monkeys.test.model.Product
 import com.monkeys.test.model.Size
@@ -21,6 +22,7 @@ class ProductDetailFragment : BaseFragment(), ProductDetailView {
     lateinit var presenter: ProductDetailPresenter
     lateinit var mView: View
     lateinit var sizeAdapter: SizesAdapter
+    lateinit var imageAdapter: ImageAdapter
 
     companion object {
 
@@ -39,8 +41,17 @@ class ProductDetailFragment : BaseFragment(), ProductDetailView {
     ): View? {
         mView = inflater.inflate(R.layout.fragment_product_detail, container, false)
         initSizeAdapter()
+        initImageAdapter()
         initPresenter()
         return mView
+    }
+
+    private fun initImageAdapter() {
+        this.imageAdapter = ImageAdapter()
+        this.mView.image_recycler_view.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = this@ProductDetailFragment.imageAdapter
+        }
     }
 
     private fun initSizeAdapter() {
@@ -68,6 +79,7 @@ class ProductDetailFragment : BaseFragment(), ProductDetailView {
     }
 
     override fun showImages(images: Array<String>) {
+        imageAdapter.refreshData(images)
     }
 
     override fun showSizes(sizes: Array<Size>) {

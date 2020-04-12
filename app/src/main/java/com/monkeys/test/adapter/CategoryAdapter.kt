@@ -33,8 +33,8 @@ class CategoryAdapter(private val viewType : CategoryViewType = CategoryViewType
         holder.itemView.setOnClickListener { listener?.onCategorySelected(itemList[position]) }
     }
 
-    fun refreshData(stores: Array<Category>) {
-        this.itemList = stores
+    fun refreshData(categories: Array<Category>) {
+        this.itemList = categories
         notifyDataSetChanged()
     }
 }

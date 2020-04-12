@@ -5,14 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.monkeys.test.R
-import com.monkeys.test.model.Category
-import com.monkeys.test.view.CategoryView
-import kotlinx.android.synthetic.main.simple_list_item.view.*
-enum class CategoryViewType{VERTICAL, HORIZONTAL}
-class CategoryAdapter(private val viewType : CategoryViewType = CategoryViewType.VERTICAL) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+import com.monkeys.test.model.Size
+import kotlinx.android.synthetic.main.list_item_with_outline.view.*
 
-    private var itemList: Array<Category> = arrayOf()
-    var listener: CategoryView.CategorySelectionListener? = null
+class SizesAdapter : RecyclerView.Adapter<SizesAdapter.ViewHolder>() {
+
+    private var itemList: Array<Size> = arrayOf()
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,7 +19,7 @@ class CategoryAdapter(private val viewType : CategoryViewType = CategoryViewType
     }
 
     private fun getView(): Int{
-        return if(viewType == CategoryViewType.VERTICAL) R.layout.simple_list_item else R.layout.list_item_with_outline
+        return R.layout.list_item_with_outline
     }
 
     override fun getItemCount(): Int {
@@ -30,10 +28,9 @@ class CategoryAdapter(private val viewType : CategoryViewType = CategoryViewType
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.itemView.text.text = itemList[position].name
-        holder.itemView.setOnClickListener { listener?.onCategorySelected(itemList[position]) }
     }
 
-    fun refreshData(stores: Array<Category>) {
+    fun refreshData(stores: Array<Size>) {
         this.itemList = stores
         notifyDataSetChanged()
     }

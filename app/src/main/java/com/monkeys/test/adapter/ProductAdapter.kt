@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.monkeys.test.R
 import com.monkeys.test.model.Product
 import com.monkeys.test.view.ProductListView
@@ -21,15 +24,24 @@ class ProductAdapter(
     private val displayMetrics: DisplayMetrics = context.resources.displayMetrics
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = convertView ?: layoutInflater.inflate(R.layout.product_list_item, null)
-        products[position].apply {
-            view.title.text = this.name
-            view.price.text =
-                parent?.context?.getString(R.string.product_price_eur, this.finalPrice)
-        }
-        if (view != null) {
-            view.card.setOnClickListener { this.listener?.onProductSelected(products[position]) }
+        val view: View
+        val holder: CardViewHolder
+        if (convertView == null) {
+            view = layoutInflater.inflate(R.layout.product_list_item, null)
+            holder = CardViewHolder(view)
+            view.tag = holder
             configureCardSize(view)
+        } else {
+            view = convertView
+            holder = convertView.tag as CardViewHolder
+        }
+        products[position].apply {
+            holder.titleTextView.text = this.name
+            holder.priceTextView.text =
+                parent?.context?.getString(R.string.product_price_eur, this.finalPrice)
+            holder.card.setOnClickListener {
+                this@ProductAdapter.listener?.onProductSelected(this)
+            }
         }
         return view
     }
@@ -37,9 +49,9 @@ class ProductAdapter(
     private fun configureCardSize(view: View) {
         val cardMargin = context.resources.getDimension(R.dimen.card_margin)
         val cardWidth =
-            (displayMetrics.widthPixels / context.resources.getInteger(R.integer.product_num_columns)) - cardMargin
+            (displayMetrics.widthPixels / context.resources.getInteger(R.integer.product_num_columns)) - (cardMargin * 2)
         val params =
-            LinearLayout.LayoutParams(cardWidth.toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            LinearLayout.LayoutParams(cardWidth.toInt(), view.card.layoutParams.height)
         view.layoutParams = params
     }
 
@@ -58,6 +70,13 @@ class ProductAdapter(
     fun refreshData(products: Array<Product>) {
         this.products = products
         notifyDataSetChanged()
+    }
+
+    class CardViewHolder(val view: View) {
+        val image: ImageView = view.image
+        val priceTextView: TextView = view.price
+        val titleTextView: TextView = view.title
+        val card: CardView = view.card
     }
 
 }

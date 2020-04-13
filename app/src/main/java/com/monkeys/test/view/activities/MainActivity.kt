@@ -1,6 +1,5 @@
 package com.monkeys.test.view.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.monkeys.test.R

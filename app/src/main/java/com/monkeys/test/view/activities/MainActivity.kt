@@ -2,6 +2,7 @@ package com.monkeys.test.view.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.FragmentManager
 import com.monkeys.test.R
 import com.monkeys.test.common.ActivityLauncher
 import com.monkeys.test.model.Category
@@ -11,10 +12,16 @@ import com.monkeys.test.view.ProductListView
 import com.monkeys.test.view.fragments.CategoryFragment
 import com.monkeys.test.view.fragments.ProductFragment
 
-class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener, ProductListView.ProductSelectionListener {
+class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener, ProductListView.ProductSelectionListener,
+    FragmentManager.OnBackStackChangedListener {
+    override fun onBackStackChanged() {
+        updateNavBackButton()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportFragmentManager.addOnBackStackChangedListener(this)
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container, CategoryFragment.newInstance()).commit()
         }
@@ -28,7 +35,16 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
             .commit()
     }
 
+    private fun updateNavBackButton(){
+        supportActionBar?.setDisplayHomeAsUpEnabled(supportFragmentManager.backStackEntryCount > 0)
+    }
+
     override fun onProductSelected(product: Product) {
         ActivityLauncher.launchProductDetailActivity(this, product)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        supportFragmentManager.popBackStack()
+        return true
     }
 }

@@ -10,12 +10,12 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProductPresenter(val productListView: ProductListView?) {
-    var productList : Array<Product>? = null
+    var productList : Array<Product> = arrayOf()
 
     fun initView(category: Category, storeId: Int){
-        productList?.let {
-            productListView?.showProducts(it)
-        }?: retrieveProducts(category, storeId)
+        if(productList.isNotEmpty()){
+            productListView?.showProducts(productList)
+        }else retrieveProducts(category,storeId)
     }
 
     private fun retrieveProducts(category: Category, storeId: Int) {
@@ -42,5 +42,4 @@ class ProductPresenter(val productListView: ProductListView?) {
 
             })
     }
-
 }

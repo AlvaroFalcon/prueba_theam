@@ -49,7 +49,7 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
         if (context is CategoryView.CategorySelectionListener) {
             this.categorySelectionListener = context
         }
-        if(context is ProductListView.ProductSelectionListener){
+        if (context is ProductListView.ProductSelectionListener) {
             this.productSelectionListener = context
         }
         super.onAttach(context)
@@ -60,10 +60,8 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
         savedInstanceState: Bundle?
     ): View? {
         this.mView = inflater.inflate(R.layout.fragment_product, container, false)
-        if (savedInstanceState == null) {
-            initCategories()
-            initProducts()
-        }
+        initCategories()
+        initProducts()
         navTitle = categoryPresenter?.category?.name
         return mView
     }
@@ -113,7 +111,7 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
     }
 
     private fun initCategoriesPresenter() {
-        if(this.categoryPresenter == null){
+        if (this.categoryPresenter == null) {
             this.categoryPresenter = CategoryPresenter(this)
         }
         this.categoryPresenter?.handleArgs(arguments, context)

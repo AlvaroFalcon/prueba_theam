@@ -2,6 +2,8 @@ package com.monkeys.test.view.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.FragmentManager
 import com.monkeys.test.R
 import com.monkeys.test.common.ActivityLauncher
@@ -41,6 +43,21 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
 
     override fun onProductSelected(product: Product) {
         ActivityLauncher.launchProductDetailActivity(this, product)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_change_store ->{
+                ActivityLauncher.launchStoreSelectionActivity(this, true)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {

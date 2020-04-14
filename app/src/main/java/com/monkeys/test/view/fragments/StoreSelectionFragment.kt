@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.monkeys.test.R
@@ -23,6 +24,17 @@ class StoreSelectionFragment : BaseFragment(), StoreSelectionView, NetworkOperat
 
     lateinit var mView : View
     private val adapter = StoreAdapter()
+
+    companion object{
+        const val EXTRA_CHANGE_LANGUAGE = "EXTRA_CHANGE_LANGUAGE"
+
+        fun newInstance(changeLanguage: Boolean = false): StoreSelectionFragment{
+            val fragment = StoreSelectionFragment()
+            val bundle = bundleOf(EXTRA_CHANGE_LANGUAGE to changeLanguage)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 
     override fun onAttach(context: Context) {
         if(context is StoreSelectionView.StoreSelectionListener){
@@ -45,7 +57,7 @@ class StoreSelectionFragment : BaseFragment(), StoreSelectionView, NetworkOperat
 
     private fun initPresenter() {
         this.presenter = StoreSelectionPresenter(this)
-        this.presenter.initView(context)
+        this.presenter.initView(arguments, context)
     }
 
     private fun initRecyclerView(){

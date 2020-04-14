@@ -18,7 +18,7 @@ class StoreSelectionActivity : AppCompatActivity(), StoreSelectionView.StoreSele
         setContentView(R.layout.activity_store_selection)
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, StoreSelectionFragment())
+                .replace(R.id.fragment_container, StoreSelectionFragment.newInstance(intent.getBooleanExtra(StoreSelectionFragment.EXTRA_CHANGE_LANGUAGE, false)))
                 .commit()
         }
     }

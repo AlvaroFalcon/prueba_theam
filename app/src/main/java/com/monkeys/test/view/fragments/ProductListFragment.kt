@@ -3,9 +3,7 @@ package com.monkeys.test.view.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.monkeys.test.R
@@ -23,19 +21,19 @@ import com.monkeys.test.view.ProductListView
 import com.monkeys.test.view.fragments.CategoryFragment.Companion.ARG_CATEGORY
 import kotlinx.android.synthetic.main.fragment_product.view.*
 
-class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOperationCallback {
+class ProductListFragment : BaseFragment(), CategoryView, ProductListView, NetworkOperationCallback {
     override val networkOperationCallback: NetworkOperationCallback = this
     private var categoryPresenter: CategoryPresenter? = null
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var productAdapter: ProductAdapter
     private var productPresenter: ProductPresenter? = null
     private lateinit var mView: View
-    var categorySelectionListener: CategoryView.CategorySelectionListener? = null
-    var productSelectionListener: ProductListView.ProductSelectionListener? = null
+    private var categorySelectionListener: CategoryView.CategorySelectionListener? = null
+    private var productSelectionListener: ProductListView.ProductSelectionListener? = null
 
     companion object {
-        fun newInstance(category: Category?): ProductFragment {
-            val productFragment = ProductFragment()
+        fun newInstance(category: Category?): ProductListFragment {
+            val productFragment = ProductListFragment()
             val args = Bundle()
             category?.let {
                 args.putParcelable(ARG_CATEGORY, it)
@@ -55,6 +53,11 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
         super.onAttach(context)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +67,15 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
         initProducts()
         navTitle = categoryPresenter?.category?.name
         return mView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.action_filter_list).apply { isVisible = true }
     }
 
     private fun initProducts() {
@@ -102,7 +114,7 @@ class ProductFragment : BaseFragment(), CategoryView, ProductListView, NetworkOp
         this.categoryAdapter.listener = this.categorySelectionListener
         this.mView.categories_recycler_view.apply {
             layoutManager = LinearLayoutManager(
-                this@ProductFragment.context,
+                this@ProductListFragment.context,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )

@@ -10,5 +10,6 @@
     <string name="composition_title">Composición</string>
     <string name="view_in_web">Ver en web</string>
     <string name="change_store">Cambiar de tienda</string>
+    <string name="filter_list">Filtrar</string>
 
 </resources>

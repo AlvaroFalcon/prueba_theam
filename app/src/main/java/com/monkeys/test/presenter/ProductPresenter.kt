@@ -15,7 +15,7 @@ class ProductPresenter(val productListView: ProductListView?) {
     fun initView(category: Category, storeId: Int){
         if(productList.isNotEmpty()){
             productListView?.showProducts(productList)
-        }else retrieveProducts(category,storeId)
+        }else retrieveProducts(category, storeId)
     }
 
     private fun retrieveProducts(category: Category, storeId: Int) {

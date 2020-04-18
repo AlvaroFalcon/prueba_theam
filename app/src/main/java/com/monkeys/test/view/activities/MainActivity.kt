@@ -12,7 +12,7 @@ import com.monkeys.test.model.Product
 import com.monkeys.test.view.CategoryView
 import com.monkeys.test.view.ProductListView
 import com.monkeys.test.view.fragments.CategoryFragment
-import com.monkeys.test.view.fragments.ProductFragment
+import com.monkeys.test.view.fragments.ProductListFragment
 
 class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener, ProductListView.ProductSelectionListener,
     FragmentManager.OnBackStackChangedListener {
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
 
     override fun onCategorySelected(category: Category) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ProductFragment.newInstance(category))
+            .replace(R.id.fragment_container, ProductListFragment.newInstance(category))
             .addToBackStack("${CategoryFragment::class.java.name}${category.categoryId}")
             .commit()
     }
@@ -58,6 +58,11 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        menu.findItem(R.id.action_filter_list).apply { isVisible = false }
+        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {

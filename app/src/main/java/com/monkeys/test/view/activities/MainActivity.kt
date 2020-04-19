@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
     override fun onCategorySelected(category: Category) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, ProductListFragment.newInstance(category))
-            .addToBackStack("${CategoryFragment::class.java.name}${category.categoryId}")
+            .addToBackStack("${ProductListFragment::class.java.name}${category.categoryId}")
             .commit()
     }
 

@@ -30,6 +30,13 @@ interface MagentoApiService{
     fun getCategories(@Path("storeId") storeId: Int): Call<Array<Category>>
 
     @GET("stores/{storeId}/products/search")
-    fun getProducts(@Path("storeId") storeId: Int, @Query("category_id") categoryId: Int): Call<SearchResultResponse>
+    fun getProducts(@Path("storeId") storeId: Int,
+                    @Query("category_id") categoryId: Int,
+                    @Query("order") orderBy: String? = "",
+                    @Query("dir") dir: String? = "",
+                    @Query("with_text") text: String? = "",
+                    @Query("page") page: Int,
+                    @Query("limit") limit: Int
+                    ): Call<SearchResultResponse>
 
 }

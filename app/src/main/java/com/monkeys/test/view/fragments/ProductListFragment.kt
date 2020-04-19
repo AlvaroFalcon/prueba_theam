@@ -14,6 +14,7 @@ import com.monkeys.test.common.NetworkOperationCallback
 import com.monkeys.test.common.PreferenceManager
 import com.monkeys.test.model.Category
 import com.monkeys.test.model.Product
+import com.monkeys.test.model.filter.ProductFilter
 import com.monkeys.test.presenter.CategoryPresenter
 import com.monkeys.test.presenter.ProductPresenter
 import com.monkeys.test.view.CategoryView
@@ -26,6 +27,7 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
     private var categoryPresenter: CategoryPresenter? = null
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var productAdapter: ProductAdapter
+    private var productFilter: ProductFilter? = null
     private var productPresenter: ProductPresenter? = null
     private lateinit var mView: View
     private var categorySelectionListener: CategoryView.CategorySelectionListener? = null
@@ -88,11 +90,16 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
         if (productPresenter == null) {
             this.productPresenter = ProductPresenter(this)
         }
+
         val category = categoryPresenter?.category
-        if (category != null && productPresenter != null && context != null) {
+        if(productFilter == null){
             context?.let {
-                productPresenter?.initView(category, PreferenceManager.getStoreId(it))
+                productFilter = ProductFilter(storeId = PreferenceManager.getStoreId(it), categoryId = category?.categoryId ?: 0)
             }
+        }
+
+        productFilter?.let {
+            productPresenter?.initView(it)
         }
     }
 
@@ -145,5 +152,6 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
     override fun hideProgress() {
         mView.progress.visibility = View.GONE
     }
+
 
 }

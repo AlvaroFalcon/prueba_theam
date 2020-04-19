@@ -43,11 +43,7 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         savedInstanceState: Bundle?
     ): View? {
         mView = inflater.inflate(R.layout.fragment_filter, container, false)
-        mView.order_by_spinner.onItemSelectedListener = this
         handleArgs()
-        restoreFilterSettings()
-        mView.search_field_input.addTextChangedListener(this)
-        mView.price_range.setOnRangeBarChangeListener(this)
         context?.let {
             val adapter = ArrayAdapter<FilterOrder>(
                 it,
@@ -56,6 +52,10 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
             )
             mView.order_by_spinner.adapter = adapter
         }
+        restoreFilterSettings()
+        mView.order_by_spinner.onItemSelectedListener = this
+        mView.search_field_input.addTextChangedListener(this)
+        mView.price_range.setOnRangeBarChangeListener(this)
         mView.search_btn.setOnClickListener {
             saveFilterChanges()
             activity?.finish()
@@ -70,7 +70,12 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
     }
 
     private fun restoreOrderSetting() {
-
+        context?.let {
+            val order = filter.order ?: FilterOrder.getDefaultOrder(it)
+            val items = FilterOrder.getFilterOrderList(it)
+            val positionToSelect = FilterOrder.getPosition(order, items)
+            mView.order_by_spinner.setSelection(positionToSelect)
+        }
     }
 
     private fun restoreTextSetting() {
@@ -111,7 +116,7 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
     }
 
     override fun onTouchEnded(rangeBar: RangeBar?) {
-
+        //nothing to do
     }
 
     override fun onRangeChangeListener(
@@ -143,7 +148,7 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        println("")
+        filter.order = mView.order_by_spinner.selectedItem as FilterOrder?
     }
 
     private fun saveFilterChanges() {
@@ -157,16 +162,16 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         return resultIntent
     }
 
+    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        this.filter.text = text.toString()
+    }
+
     override fun afterTextChanged(p0: Editable?) {
         //nothing to do
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         //nothing to do
-    }
-
-    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        this.filter.text = text.toString()
     }
 
 

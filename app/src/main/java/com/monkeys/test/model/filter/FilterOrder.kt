@@ -18,6 +18,18 @@ class FilterOrder (val orderBy: ORDER_BY, val orderDir: ORDER_DIR, val title: St
                 FilterOrder(ORDER_BY.BEST_SELLER, ORDER_DIR.DESC, context.getString(R.string.filter_by_bestseller_desc))
             )
         }
+
+        fun getDefaultOrder(context: Context): FilterOrder{
+            return FilterOrder(ORDER_BY.NAME, ORDER_DIR.DESC, context.getString(R.string.filter_by_name_desc))
+        }
+
+        fun getPosition(filterOrder: FilterOrder, items: Array<FilterOrder>): Int{
+            for(i in items.indices){
+                if(items[i].orderBy == filterOrder.orderBy && items[i].orderDir == filterOrder.orderDir) return i
+            }
+            return 0
+        }
+
     }
 
     override fun toString(): String {

@@ -22,7 +22,7 @@ import com.monkeys.test.model.filter.ProductFilter
 import com.monkeys.test.view.activities.FilterActivity.Companion.ARG_FILTER
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
-class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
+class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
     AdapterView.OnItemSelectedListener, TextWatcher {
 
     lateinit var mView: View
@@ -42,6 +42,8 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        navTitle = getString(R.string.filter_list)
+        super.onCreateView(inflater, container, savedInstanceState)
         mView = inflater.inflate(R.layout.fragment_filter, container, false)
         handleArgs(savedInstanceState)
         initSpinnerAdapter()

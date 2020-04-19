@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface MagentoApiService{
     companion object{
-        const val baseUrl = "http://private-anon-3ee2b08f6b-gocco.apiary-mock.com"
+        private const val baseUrl = "https://private-anon-3ee2b08f6b-gocco.apiary-mock.com"
 
         fun create(): MagentoApiService{
             val retrofit = Retrofit.Builder()

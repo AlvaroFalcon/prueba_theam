@@ -83,5 +83,6 @@ class StoreSelectionFragment : BaseFragment(), StoreSelectionView, NetworkOperat
 
     override fun showError() {
         hideProgress()
+        showDialog(R.string.dialog_error_title, R.string.dialog_error_body, R.drawable.ic_error_24dp)
     }
 }

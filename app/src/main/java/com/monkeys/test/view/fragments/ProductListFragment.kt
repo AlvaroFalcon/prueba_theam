@@ -115,6 +115,10 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
                 productFilter = ProductFilter(storeId = PreferenceManager.getStoreId(it), categoryId = category?.categoryId ?: 0)
             }
         }
+        retrieveProducts()
+    }
+
+    private fun retrieveProducts() {
         productFilter?.let {
             productPresenter?.initView(it)
         }
@@ -164,6 +168,7 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
 
     override fun showError() {
         hideProgress()
+        showDialog(R.string.dialog_error_title, R.string.dialog_error_body, R.drawable.ic_error_24dp)
     }
 
     override fun hideProgress() {

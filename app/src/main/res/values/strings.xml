@@ -21,5 +21,8 @@
     <string name="filter_by_price_asc">Precio mas bajo</string>
     <string name="filter_by_price_desc">Precio mas alto</string>
     <string name="filter_by_bestseller_desc">Más populares</string>
+    <string name="dialog_positive_btn">Aceptar</string>
+    <string name="dialog_error_title">Ha ocurrido un error</string>
+    <string name="dialog_error_body">No se han podido obtener los datos correctamente, por favor vuelva a intentarlo más tarde</string>
 
 </resources>

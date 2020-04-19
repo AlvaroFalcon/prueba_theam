@@ -43,7 +43,7 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         savedInstanceState: Bundle?
     ): View? {
         mView = inflater.inflate(R.layout.fragment_filter, container, false)
-        handleArgs()
+        handleArgs(savedInstanceState)
         context?.let {
             val adapter = ArrayAdapter<FilterOrder>(
                 it,
@@ -107,7 +107,19 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         priceTv?.text = resources.getString(R.string.product_price_eur, price)
     }
 
-    private fun handleArgs() {
+    private fun handleArgs(savedInstanceState: Bundle?) {
+        if(savedInstanceState != null){
+            restoreFilterFromSavedInstance(savedInstanceState)
+        }else{
+            restoreFilterFromArguments()
+        }
+    }
+
+    private fun restoreFilterFromSavedInstance(savedInstanceState: Bundle) {
+        this.filter = savedInstanceState.getSerializable(ARG_FILTER) as ProductFilter
+    }
+
+    private fun restoreFilterFromArguments() {
         arguments?.let {
             if (it.containsKey(ARG_FILTER)) {
                 this.filter = it.getSerializable(ARG_FILTER) as ProductFilter
@@ -174,5 +186,8 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         //nothing to do
     }
 
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(ARG_FILTER, filter)
+    }
 }

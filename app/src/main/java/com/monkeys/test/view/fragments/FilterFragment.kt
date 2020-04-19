@@ -44,6 +44,13 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
     ): View? {
         mView = inflater.inflate(R.layout.fragment_filter, container, false)
         handleArgs(savedInstanceState)
+        initSpinnerAdapter()
+        restoreFilterSettings()
+        initListeners()
+        return mView
+    }
+
+    private fun initSpinnerAdapter() {
         context?.let {
             val adapter = ArrayAdapter<FilterOrder>(
                 it,
@@ -52,7 +59,9 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
             )
             mView.order_by_spinner.adapter = adapter
         }
-        restoreFilterSettings()
+    }
+
+    private fun initListeners() {
         mView.order_by_spinner.onItemSelectedListener = this
         mView.search_field_input.addTextChangedListener(this)
         mView.price_range.setOnRangeBarChangeListener(this)
@@ -60,7 +69,6 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
             saveFilterChanges()
             activity?.finish()
         }
-        return mView
     }
 
     private fun restoreFilterSettings() {

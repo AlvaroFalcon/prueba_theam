@@ -11,5 +11,15 @@
     <string name="view_in_web">Ver en web</string>
     <string name="change_store">Cambiar de tienda</string>
     <string name="filter_list">Filtrar</string>
+    <string name="search_hint">Buscar...</string>
+    <string name="order_by">Ordenar por</string>
+    <string name="price_title">Precio</string>
+    <string name="search">Buscar</string>
+
+    <string name="filter_by_name_desc">Nombre: A-Z</string>
+    <string name="filter_by_name_asc">Nombre: Z-A</string>
+    <string name="filter_by_price_asc">Precio mas bajo</string>
+    <string name="filter_by_price_desc">Precio mas alto</string>
+    <string name="filter_by_bestseller_desc">Más populares</string>
 
 </resources>

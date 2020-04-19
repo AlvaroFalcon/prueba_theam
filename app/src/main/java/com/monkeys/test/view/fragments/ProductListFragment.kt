@@ -69,10 +69,6 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
         return mView
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_filter_list).apply { isVisible = true }

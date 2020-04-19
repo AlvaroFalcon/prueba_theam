@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activities.ProductDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".view.activities.FilterActivity"></activity>
+        <activity
+            android:name=".view.activities.ProductDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.activities.MainActivity" />
         <activity android:name=".view.activities.StoreSelectionActivity">
             <intent-filter>

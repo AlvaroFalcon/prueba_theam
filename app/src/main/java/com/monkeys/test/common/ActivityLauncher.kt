@@ -2,6 +2,7 @@ package com.monkeys.test.common
 import android.content.Context
 import android.content.Intent
 import com.monkeys.test.model.Product
+import com.monkeys.test.view.activities.FilterActivity
 import com.monkeys.test.view.activities.MainActivity
 import com.monkeys.test.view.activities.ProductDetailActivity
 import com.monkeys.test.view.activities.StoreSelectionActivity
@@ -26,6 +27,11 @@ class ActivityLauncher {
         fun launchStoreSelectionActivity(context: Context, allowChangeStore: Boolean){
             val intent = Intent(context, StoreSelectionActivity::class.java)
             intent.putExtra(StoreSelectionFragment.EXTRA_CHANGE_LANGUAGE, allowChangeStore)
+            context.startActivity(intent)
+        }
+
+        fun launchFilterActivity(context: Context){
+            val intent = Intent(context, FilterActivity::class.java)
             context.startActivity(intent)
         }
 

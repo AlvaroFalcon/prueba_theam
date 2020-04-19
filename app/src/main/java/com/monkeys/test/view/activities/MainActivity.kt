@@ -56,6 +56,9 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
             R.id.action_change_store ->{
                 ActivityLauncher.launchStoreSelectionActivity(this, true)
             }
+            R.id.action_filter_list ->{
+                ActivityLauncher.launchFilterActivity(this)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

@@ -4,6 +4,8 @@ package com.monkeys.test.view.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +23,8 @@ import com.monkeys.test.view.activities.FilterActivity.Companion.ARG_FILTER
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
-    AdapterView.OnItemSelectedListener {
+    AdapterView.OnItemSelectedListener, TextWatcher {
+
     lateinit var mView: View
     lateinit var filter: ProductFilter
 
@@ -43,6 +46,7 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         mView.order_by_spinner.onItemSelectedListener = this
         handleArgs()
         restoreFilterSettings()
+        mView.search_field_input.addTextChangedListener(this)
         mView.price_range.setOnRangeBarChangeListener(this)
         context?.let {
             val adapter = ArrayAdapter<FilterOrder>(
@@ -66,9 +70,13 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
     }
 
     private fun restoreOrderSetting() {
+
     }
 
     private fun restoreTextSetting() {
+        filter.text?.let {
+            mView.search_field_input.setText(it)
+        }
     }
 
     private fun restorePriceSettings() {
@@ -148,5 +156,18 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
         resultIntent.putExtra(ARG_FILTER, filter)
         return resultIntent
     }
+
+    override fun afterTextChanged(p0: Editable?) {
+        //nothing to do
+    }
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        //nothing to do
+    }
+
+    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        this.filter.text = text.toString()
+    }
+
 
 }

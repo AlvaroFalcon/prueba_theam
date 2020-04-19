@@ -18,7 +18,7 @@ class ProductPresenter(val productListView: ProductListView?) {
         }else retrieveProducts(productFilter)
     }
 
-    private fun retrieveProducts(productFilter: ProductFilter) {
+    fun retrieveProducts(productFilter: ProductFilter) {
         productListView?.networkOperationCallback?.showProgress()
         MagentoApiService.create()
             .getProducts(

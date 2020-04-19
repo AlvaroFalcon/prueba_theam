@@ -1,14 +1,18 @@
 package com.monkeys.test.view.activities
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.monkeys.test.R
 import com.monkeys.test.common.ActivityLauncher
 import com.monkeys.test.model.Category
 import com.monkeys.test.model.Product
+import com.monkeys.test.model.filter.ProductFilter
 import com.monkeys.test.view.CategoryView
 import com.monkeys.test.view.ProductListView
 import com.monkeys.test.view.fragments.CategoryFragment
@@ -72,4 +76,26 @@ class MainActivity : AppCompatActivity(), CategoryView.CategorySelectionListener
         supportFragmentManager.popBackStack()
         return true
     }
+
+    private fun getCurrentFragment(): Fragment?{
+        return supportFragmentManager.findFragmentById(R.id.fragment_container)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == FilterActivity.FILTER_REQUEST_CODE && data != null){
+            val fragment = getCurrentFragment()
+            if(fragment is ProductListView){
+                applyFilter(getProductFilter(data), fragment)
+            }
+        }
+    }
+
+    private fun applyFilter(filter: ProductFilter, productListView: ProductListView) {
+        productListView.applyFilter(filter)
+    }
+
+    private fun getProductFilter(data: Intent) =
+        data.getSerializableExtra(FilterActivity.ARG_FILTER) as ProductFilter
+
 }

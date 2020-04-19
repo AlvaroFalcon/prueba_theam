@@ -19,6 +19,7 @@ import com.monkeys.test.presenter.CategoryPresenter
 import com.monkeys.test.presenter.ProductPresenter
 import com.monkeys.test.view.CategoryView
 import com.monkeys.test.view.ProductListView
+import com.monkeys.test.view.activities.FilterActivity
 import com.monkeys.test.view.fragments.CategoryFragment.Companion.ARG_CATEGORY
 import kotlinx.android.synthetic.main.fragment_product.view.*
 
@@ -65,10 +66,15 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
         savedInstanceState: Bundle?
     ): View? {
         this.mView = inflater.inflate(R.layout.fragment_product, container, false)
+        if(savedInstanceState != null) restoreScreenState(savedInstanceState)
         initCategories()
         initProducts()
         navTitle = categoryPresenter?.category?.name
         return mView
+    }
+
+    private fun restoreScreenState(savedInstanceState: Bundle) {
+        this.productFilter = savedInstanceState.getSerializable(FilterActivity.ARG_FILTER) as ProductFilter?
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -97,7 +103,6 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
                 productFilter = ProductFilter(storeId = PreferenceManager.getStoreId(it), categoryId = category?.categoryId ?: 0)
             }
         }
-
         productFilter?.let {
             productPresenter?.initView(it)
         }
@@ -153,5 +158,14 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
         mView.progress.visibility = View.GONE
     }
 
+    override fun applyFilter(filter: ProductFilter) {
+        this.productFilter = filter
+        this.productPresenter?.retrieveProducts(filter)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable(FilterActivity.ARG_FILTER, this.productFilter)
+    }
 
 }

@@ -1,6 +1,8 @@
 package com.monkeys.test.view.fragments
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +14,14 @@ import com.appyvet.materialrangebar.RangeBar
 
 import com.monkeys.test.R
 import com.monkeys.test.model.filter.FilterOrder
+import com.monkeys.test.model.filter.ProductFilter
+import com.monkeys.test.view.activities.FilterActivity
+import com.monkeys.test.view.activities.FilterActivity.Companion.ARG_FILTER
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener, AdapterView.OnItemSelectedListener {
     lateinit var mView: View
+    lateinit var filter: ProductFilter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +34,11 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener, AdapterVie
         context?.let {
             val adapter = ArrayAdapter<FilterOrder>(it, android.R.layout.simple_spinner_item, FilterOrder.getFilterOrderList(it))
             mView.order_by_spinner.adapter = adapter
+        }
+        filter = ProductFilter(storeId = 41, categoryId = 17)
+        mView.search_btn.setOnClickListener {
+            saveFilterChanges()
+            activity?.finish()
         }
         return mView
     }
@@ -59,6 +70,17 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener, AdapterVie
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         println("")
+    }
+
+    private fun saveFilterChanges() {
+        val resultIntent = createResultIntent()
+        activity?.setResult(Activity.RESULT_OK, resultIntent)
+    }
+
+    private fun createResultIntent(): Intent {
+        val resultIntent = Intent()
+        resultIntent.putExtra(ARG_FILTER, filter)
+        return resultIntent
     }
 
 }

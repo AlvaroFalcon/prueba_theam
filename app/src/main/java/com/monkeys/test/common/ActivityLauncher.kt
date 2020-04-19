@@ -1,4 +1,5 @@
 package com.monkeys.test.common
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.monkeys.test.model.Product
@@ -30,9 +31,9 @@ class ActivityLauncher {
             context.startActivity(intent)
         }
 
-        fun launchFilterActivity(context: Context){
+        fun launchFilterActivity(context: Activity){
             val intent = Intent(context, FilterActivity::class.java)
-            context.startActivity(intent)
+            context.startActivityForResult(intent, FilterActivity.FILTER_REQUEST_CODE)
         }
 
     }

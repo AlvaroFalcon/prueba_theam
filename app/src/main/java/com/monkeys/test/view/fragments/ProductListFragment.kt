@@ -10,6 +10,7 @@ import com.monkeys.test.R
 import com.monkeys.test.adapter.CategoryAdapter
 import com.monkeys.test.adapter.CategoryViewType
 import com.monkeys.test.adapter.ProductAdapter
+import com.monkeys.test.common.ActivityLauncher
 import com.monkeys.test.common.NetworkOperationCallback
 import com.monkeys.test.common.PreferenceManager
 import com.monkeys.test.model.Category
@@ -80,6 +81,17 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_filter_list).apply { isVisible = true }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_filter_list ->{
+                activity?.let {
+                    ActivityLauncher.launchFilterActivity(it, productFilter)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initProducts() {

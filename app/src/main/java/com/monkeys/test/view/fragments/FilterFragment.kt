@@ -10,37 +10,96 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
+import androidx.core.os.bundleOf
 import com.appyvet.materialrangebar.RangeBar
 
 import com.monkeys.test.R
 import com.monkeys.test.model.filter.FilterOrder
 import com.monkeys.test.model.filter.ProductFilter
-import com.monkeys.test.view.activities.FilterActivity
 import com.monkeys.test.view.activities.FilterActivity.Companion.ARG_FILTER
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
-class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener, AdapterView.OnItemSelectedListener {
+class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener,
+    AdapterView.OnItemSelectedListener {
     lateinit var mView: View
     lateinit var filter: ProductFilter
+
+    companion object {
+        fun newInstance(productFilter: ProductFilter?): FilterFragment {
+            val fragment = FilterFragment()
+            val args = bundleOf(ARG_FILTER to productFilter)
+            fragment.arguments = args
+            return fragment
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mView = inflater.inflate(R.layout.fragment_filter, container, false)
-        mView.price_range.setOnRangeBarChangeListener(this)
         mView.order_by_spinner.onItemSelectedListener = this
-        updatePriceLabels(mView.price_range.leftIndex, mView.price_range.rightIndex)
+        handleArgs()
+        restoreFilterSettings()
+        mView.price_range.setOnRangeBarChangeListener(this)
         context?.let {
-            val adapter = ArrayAdapter<FilterOrder>(it, android.R.layout.simple_spinner_item, FilterOrder.getFilterOrderList(it))
+            val adapter = ArrayAdapter<FilterOrder>(
+                it,
+                android.R.layout.simple_spinner_item,
+                FilterOrder.getFilterOrderList(it)
+            )
             mView.order_by_spinner.adapter = adapter
         }
-        filter = ProductFilter(storeId = 41, categoryId = 17)
         mView.search_btn.setOnClickListener {
             saveFilterChanges()
             activity?.finish()
         }
         return mView
+    }
+
+    private fun restoreFilterSettings() {
+        restorePriceSettings()
+        restoreTextSetting()
+        restoreOrderSetting()
+    }
+
+    private fun restoreOrderSetting() {
+    }
+
+    private fun restoreTextSetting() {
+    }
+
+    private fun restorePriceSettings() {
+        filter.priceMin?.let { setPrice(mView.min_price, it)
+        } ?: setPrice(
+            mView.min_price,
+            mView.price_range.leftIndex + 1
+        )
+        filter.priceMax?.let { setPrice(mView.max_price, it) } ?: setPrice(
+            mView.max_price,
+            mView.price_range.rightIndex + 1
+        )
+        restoreRangeBar()
+    }
+
+    private fun restoreRangeBar() {
+        val priceMin = filter.priceMin ?: resources.getInteger(R.integer.filter_min_price_default)
+        val priceMax = filter.priceMax ?: resources.getInteger(R.integer.filter_max_price_default)
+        mView.price_range.setRangePinsByValue(priceMin.toFloat(), priceMax.toFloat())
+    }
+
+    private fun setPrice(priceTv: TextView?, price: Int) {
+        priceTv?.text = resources.getString(R.string.product_price_eur, price)
+    }
+
+    private fun handleArgs() {
+        arguments?.let {
+            if (it.containsKey(ARG_FILTER)) {
+                this.filter = it.getSerializable(ARG_FILTER) as ProductFilter
+            }
+        }
     }
 
     override fun onTouchEnded(rangeBar: RangeBar?) {
@@ -55,14 +114,21 @@ class FilterFragment : Fragment(), RangeBar.OnRangeBarChangeListener, AdapterVie
         rightPinValue: String?
     ) {
         updatePriceLabels(leftPinIndex + 1, rightPinIndex + 1)
+        updateFilterSettings(leftPinIndex + 1, rightPinIndex + 1)
+    }
+
+    private fun updateFilterSettings(priceMin: Int, priceMax: Int) {
+        this.filter.priceMin = priceMin
+        this.filter.priceMax = priceMax
+
     }
 
     override fun onTouchStarted(rangeBar: RangeBar?) {
     }
 
-    private fun updatePriceLabels(minPrice: Int, maxPrice: Int) {
-        mView.min_price.text = resources.getString(R.string.product_price_eur, minPrice)
-        mView.max_price.text = resources.getString(R.string.product_price_eur, maxPrice)
+    private fun updatePriceLabels(priceMin: Int, priceMax: Int) {
+        setPrice(mView.min_price, priceMin)
+        setPrice(mView.max_price, priceMax)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

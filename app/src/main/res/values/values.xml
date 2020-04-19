@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="product_num_columns">2</integer>
+    <integer name="filter_min_price_default">1</integer>
+    <integer name="filter_max_price_default">100</integer>
 </resources>

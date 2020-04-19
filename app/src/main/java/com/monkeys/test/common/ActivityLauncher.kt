@@ -3,6 +3,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.monkeys.test.model.Product
+import com.monkeys.test.model.filter.ProductFilter
 import com.monkeys.test.view.activities.FilterActivity
 import com.monkeys.test.view.activities.MainActivity
 import com.monkeys.test.view.activities.ProductDetailActivity
@@ -31,8 +32,12 @@ class ActivityLauncher {
             context.startActivity(intent)
         }
 
-        fun launchFilterActivity(context: Activity){
+        fun launchFilterActivity(
+            context: Activity,
+            productFilter: ProductFilter?
+        ){
             val intent = Intent(context, FilterActivity::class.java)
+            intent.putExtra(FilterActivity.ARG_FILTER, productFilter)
             context.startActivityForResult(intent, FilterActivity.FILTER_REQUEST_CODE)
         }
 

@@ -9,6 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.monkeys.test.model.filter.Filter
+
 
 interface MagentoApiService{
     companion object{
@@ -16,10 +20,22 @@ interface MagentoApiService{
 
         fun create(): MagentoApiService{
             val retrofit = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(buildGsonConverter())
                 .baseUrl(baseUrl)
                 .build()
             return retrofit.create(MagentoApiService::class.java)
+        }
+        private fun buildGsonConverter(): GsonConverterFactory {
+
+            val builder = GsonBuilder()
+            // Adding custom deserializers
+            builder.registerTypeAdapter(
+                Filter::class.java,
+                FilterSerializer<Filter>()
+            )
+            val gson = builder.create()
+
+            return GsonConverterFactory.create(gson)
         }
     }
 

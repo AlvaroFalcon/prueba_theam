@@ -9,6 +9,5 @@ class ProductFilter(
     val page: Int = 1,
     val limit: Int = 10,
     var text: String? = null,
-    var priceMin: Int? = null,
-    var priceMax: Int? = null
+    var availableFilters: Array<Filter>? = null
 ) : Serializable

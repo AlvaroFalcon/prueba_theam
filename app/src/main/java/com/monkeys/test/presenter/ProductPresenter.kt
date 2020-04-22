@@ -39,6 +39,7 @@ class ProductPresenter(val productListView: ProductListView?) {
                     if(body != null && response.isSuccessful){
                         productList = body.results
                         productListView?.showProducts(body.results)
+                        productListView?.setAvailableFilters(body.filters)
                     }else{
                         productListView?.networkOperationCallback?.showError()
                     }

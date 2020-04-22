@@ -15,6 +15,7 @@ import com.monkeys.test.common.NetworkOperationCallback
 import com.monkeys.test.common.PreferenceManager
 import com.monkeys.test.model.Category
 import com.monkeys.test.model.Product
+import com.monkeys.test.model.filter.Filter
 import com.monkeys.test.model.filter.ProductFilter
 import com.monkeys.test.presenter.CategoryPresenter
 import com.monkeys.test.presenter.ProductPresenter
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_product.view.*
 
 class ProductListFragment : BaseFragment(), CategoryView, ProductListView, NetworkOperationCallback {
     override val networkOperationCallback: NetworkOperationCallback = this
+
     private var categoryPresenter: CategoryPresenter? = null
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var productAdapter: ProductAdapter
@@ -34,8 +36,8 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
     private lateinit var mView: View
     private var categorySelectionListener: CategoryView.CategorySelectionListener? = null
     private var productSelectionListener: ProductListView.ProductSelectionListener? = null
-
     companion object {
+
         fun newInstance(category: Category?): ProductListFragment {
             val productFragment = ProductListFragment()
             val args = Bundle()
@@ -46,7 +48,6 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
             return productFragment
         }
     }
-
     override fun onAttach(context: Context) {
         if (context is CategoryView.CategorySelectionListener) {
             this.categorySelectionListener = context
@@ -183,6 +184,10 @@ class ProductListFragment : BaseFragment(), CategoryView, ProductListView, Netwo
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable(FilterActivity.ARG_FILTER, this.productFilter)
+    }
+
+    override fun setAvailableFilters(filters: Array<Filter>) {
+        this.productFilter?.availableFilters = filters
     }
 
 }

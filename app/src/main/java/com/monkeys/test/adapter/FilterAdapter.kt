@@ -5,12 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appyvet.materialrangebar.RangeBar
 import com.monkeys.test.R
 import com.monkeys.test.model.filter.Filter
 import com.monkeys.test.model.filter.FilterType
 import com.monkeys.test.model.filter.image_filter.ImageFilter
+import com.monkeys.test.model.filter.range_filter.RangeFilter
 import com.monkeys.test.model.filter.text_filter.TextFilter
-import kotlinx.android.synthetic.main.range_filter_list_item.view.label
+import kotlinx.android.synthetic.main.range_filter_list_item.view.*
 import kotlinx.android.synthetic.main.text_filter_list_item.view.recycler_view
 
 class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
@@ -68,7 +70,43 @@ class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
     }
 
     private fun initRangeViewHolder(holder: RangeFilterViewHolder, position: Int) {
-        holder.itemView.label.text = itemList[position].label
+        val item = itemList[position]
+        holder.itemView.label.text = item.label
+        if(item is RangeFilter){
+            updatePriceLabels(item.min.toString(), item.max.toString(), holder)
+            holder.itemView.price_range.tickStart = item.min.toFloat()
+            holder.itemView.price_range.tickEnd = item.max.toFloat()
+            holder.itemView.price_range.setRangePinsByValue(item.min.toFloat(), item.max.toFloat())
+            holder.itemView.price_range.setOnRangeBarChangeListener(object: RangeBar.OnRangeBarChangeListener{
+                override fun onRangeChangeListener(
+                    rangeBar: RangeBar?,
+                    leftPinIndex: Int,
+                    rightPinIndex: Int,
+                    leftPinValue: String,
+                    rightPinValue: String
+                ) {
+                    updatePriceLabels(leftPinValue, rightPinValue, holder)
+                }
+
+                override fun onTouchEnded(rangeBar: RangeBar?) {
+                }
+
+                override fun onTouchStarted(rangeBar: RangeBar?) {
+                }
+
+            })
+
+        }
+    }
+
+    private fun updatePriceLabels(
+        min: String,
+        max: String,
+        holder: RangeFilterViewHolder
+    ) {
+        val context = holder.itemView.context
+        holder.itemView.min.text = context.getString(R.string.product_price_eur, min.toInt())
+        holder.itemView.max.text = context.getString(R.string.product_price_eur, max.toInt())
     }
 
     private fun initImageViewHolder(holder: ImageFilterViewHolder, position: Int) {

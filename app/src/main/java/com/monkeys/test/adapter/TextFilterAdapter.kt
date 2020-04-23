@@ -30,8 +30,8 @@ class TextFilterAdapter : RecyclerView.Adapter<TextFilterAdapter.ViewHolder>() {
         holder.itemView.text.text  = itemList[position].label
     }
 
-    fun refreshData(sizes: Array<TextFilterOption>) {
-        this.itemList = sizes
+    fun refreshData(items: Array<TextFilterOption>) {
+        this.itemList = items
         notifyDataSetChanged()
     }
 }

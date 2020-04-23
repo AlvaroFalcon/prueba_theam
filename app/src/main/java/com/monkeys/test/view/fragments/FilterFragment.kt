@@ -4,15 +4,11 @@ package com.monkeys.test.view.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appyvet.materialrangebar.RangeBar
@@ -146,9 +142,9 @@ class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
         outState.putSerializable(ARG_FILTER, filter)
     }
 
-    override fun handleArgs(savedInstanceState: Bundle?) {
-        if(savedInstanceState != null){
-            restoreFilterFromSavedInstance(savedInstanceState)
+    override fun handleArgs(args: Bundle?) {
+        if(args != null){
+            restoreFilterFromSavedInstance(args)
         }else{
             restoreFilterFromArguments()
         }

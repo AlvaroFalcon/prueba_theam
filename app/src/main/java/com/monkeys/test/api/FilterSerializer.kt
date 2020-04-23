@@ -8,11 +8,12 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
 import com.monkeys.test.model.filter.Filter
+import com.monkeys.test.model.filter.FilterType
 import com.monkeys.test.model.filter.image_filter.ImageFilter
 import com.monkeys.test.model.filter.range_filter.RangeFilter
 import com.monkeys.test.model.filter.text_filter.TextFilter
 
-enum class FILTER_TYPES(val value: String){TEXT("text"), IMAGE("image"), RANGE("range")}
+
 
 class FilterSerializer<T: Filter> : JsonDeserializer<T> {
 companion object{
@@ -35,9 +36,9 @@ companion object{
         try {
 
             val className : String = when(typeElem.asString){
-                FILTER_TYPES.TEXT.value ->{TextFilter::class.java.name}
-                FILTER_TYPES.IMAGE.value ->{ImageFilter::class.java.name}
-                FILTER_TYPES.RANGE.value -> {RangeFilter::class.java.name}
+                FilterType.TEXT.value ->{TextFilter::class.java.name}
+                FilterType.IMAGE.value ->{ImageFilter::class.java.name}
+                FilterType.RANGE.value -> {RangeFilter::class.java.name}
                 else ->{""}
             }
             return Class.forName(className)

@@ -14,19 +14,22 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.appyvet.materialrangebar.RangeBar
 
 import com.monkeys.test.R
+import com.monkeys.test.adapter.FilterAdapter
 import com.monkeys.test.model.filter.FilterOrder
 import com.monkeys.test.model.filter.ProductFilter
+import com.monkeys.test.view.FilterView
 import com.monkeys.test.view.activities.FilterActivity.Companion.ARG_FILTER
 import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
-    AdapterView.OnItemSelectedListener, TextWatcher {
-
+    AdapterView.OnItemSelectedListener, FilterView {
     lateinit var mView: View
     lateinit var filter: ProductFilter
+    var filterAdapter: FilterAdapter? = null
 
     companion object {
         fun newInstance(productFilter: ProductFilter?): FilterFragment {
@@ -46,7 +49,8 @@ class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
         mView = inflater.inflate(R.layout.fragment_filter, container, false)
         handleArgs(savedInstanceState)
         initSpinnerAdapter()
-        restoreFilterSettings()
+        initFilterAdapter()
+        restoreFilters()
         initListeners()
         return mView
     }
@@ -62,18 +66,23 @@ class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
         }
     }
 
+    private fun initFilterAdapter() {
+        context?.let {
+            filterAdapter = FilterAdapter()
+            this.mView.recycler_view.apply {
+                layoutManager = LinearLayoutManager(it)
+                this.adapter = filterAdapter
+            }
+        }
+        setFilters(filter)
+    }
+
     private fun initListeners() {
         mView.order_by_spinner.onItemSelectedListener = this
-        mView.search_field_input.addTextChangedListener(this)
         /*mView.search_btn.setOnClickListener {
             saveFilterChanges()
             activity?.finish()
         }*/
-    }
-
-    private fun restoreFilterSettings() {
-        restoreTextSetting()
-        restoreOrderSetting()
     }
 
     private fun restoreOrderSetting() {
@@ -88,18 +97,6 @@ class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
     private fun restoreTextSetting() {
         filter.text?.let {
             mView.search_field_input.setText(it)
-        }
-    }
-
-    private fun setPrice(priceTv: TextView?, price: Int) {
-        priceTv?.text = resources.getString(R.string.product_price_eur, price)
-    }
-
-    private fun handleArgs(savedInstanceState: Bundle?) {
-        if(savedInstanceState != null){
-            restoreFilterFromSavedInstance(savedInstanceState)
-        }else{
-            restoreFilterFromArguments()
         }
     }
 
@@ -138,31 +135,37 @@ class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
         filter.order = mView.order_by_spinner.selectedItem as FilterOrder?
     }
 
-    private fun saveFilterChanges() {
-        val resultIntent = createResultIntent()
-        activity?.setResult(Activity.RESULT_OK, resultIntent)
-    }
-
     private fun createResultIntent(): Intent {
         val resultIntent = Intent()
         resultIntent.putExtra(ARG_FILTER, filter)
         return resultIntent
     }
 
-    override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        this.filter.text = text.toString()
-    }
-
-    override fun afterTextChanged(p0: Editable?) {
-        //nothing to do
-    }
-
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        //nothing to do
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable(ARG_FILTER, filter)
+    }
+
+    override fun handleArgs(savedInstanceState: Bundle?) {
+        if(savedInstanceState != null){
+            restoreFilterFromSavedInstance(savedInstanceState)
+        }else{
+            restoreFilterFromArguments()
+        }
+    }
+
+    override fun setFilters(filter: ProductFilter) {
+        this.filterAdapter?.refreshData(filter.availableFilters)
+    }
+
+    override fun restoreFilters() {
+        restoreTextSetting()
+        restoreOrderSetting()
+    }
+
+    override fun saveFilters() {
+        this.filter.text = mView.search_field_input.text.toString()
+        val resultIntent = createResultIntent()
+        activity?.setResult(Activity.RESULT_OK, resultIntent)
     }
 }

@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_background_outline"
     android:orientation="vertical"
-    android:layout_marginEnd="8dp"
-    android:padding="8dp">
+    android:layout_marginEnd="8dp">
 
     <TextView
+        android:padding="8dp"
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

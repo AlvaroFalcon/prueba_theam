@@ -29,6 +29,12 @@ class ImageFilterAdapter : RecyclerView.Adapter<ImageFilterAdapter.ViewHolder>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = itemList[position]
+        holder.itemView.setOnClickListener {
+            item.selected = !item.selected
+            notifyItemChanged(position)
+        }
+        val markerVisibility = if(item.selected) View.VISIBLE else View.GONE
+        holder.itemView.selected_marker.visibility = markerVisibility
         GlideApp.with(holder.itemView.image.context)
             .load(item.imageUrl)
             .placeholder(R.drawable.placeholder)

@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_background_outline"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_outline"
+    android:padding="@dimen/outline_size"
     android:layout_marginEnd="@dimen/material_horizontal_margin"
     android:orientation="vertical">
 
     <ImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/image"
         android:layout_width="24dp"
         android:layout_height="24dp" />
-</LinearLayout>
+    <ImageView
+        android:id="@+id/selected_marker"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_done_black_24dp"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

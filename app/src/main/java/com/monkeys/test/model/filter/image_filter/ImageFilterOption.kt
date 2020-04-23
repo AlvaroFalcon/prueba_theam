@@ -6,5 +6,5 @@ class ImageFilterOption(
     val id: String,
     val label: String,
     val imageUrl: String,
-    var selected: Boolean? = false
+    var selected: Boolean = false
 ) : Serializable

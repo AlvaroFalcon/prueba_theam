@@ -3,4 +3,5 @@
     <dimen name="circular_progress_size">48dp</dimen>
     <dimen name="material_horizontal_margin">16dp</dimen>
     <dimen name="card_margin">7dp</dimen>
+    <dimen name="outline_size">1dp</dimen>
 </resources>

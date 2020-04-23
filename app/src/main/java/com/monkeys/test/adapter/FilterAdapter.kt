@@ -3,11 +3,14 @@ package com.monkeys.test.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.monkeys.test.R
 import com.monkeys.test.model.filter.Filter
 import com.monkeys.test.model.filter.FilterType
+import com.monkeys.test.model.filter.text_filter.TextFilter
 import kotlinx.android.synthetic.main.range_filter_list_item.view.label
+import kotlinx.android.synthetic.main.text_filter_list_item.view.*
 
 class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
 
@@ -72,7 +75,15 @@ class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
     }
 
     private fun initTextViewHolder(holder: TextFilterViewHolder, position: Int) {
-        holder.itemView.label.text = itemList[position].label
+        val item = itemList[position]
+        holder.itemView.label.text = item.label
+        holder.itemView.recycler_view.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = holder.adapter
+        }
+        if(item is TextFilter){
+            holder.adapter.refreshData(item.options)
+        }
     }
 
     fun refreshData(availableFilters: Array<Filter>?) {
@@ -83,7 +94,9 @@ class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
     }
 
     open class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-    class TextFilterViewHolder(view: View) : FilterAdapter.ViewHolder(view)
+    class TextFilterViewHolder(view: View) : FilterAdapter.ViewHolder(view){
+        val adapter = TextFilterAdapter()
+    }
     class ImageFilterViewHolder(view: View): FilterAdapter.ViewHolder(view)
     class RangeFilterViewHolder(view: View): FilterAdapter.ViewHolder(view)
 

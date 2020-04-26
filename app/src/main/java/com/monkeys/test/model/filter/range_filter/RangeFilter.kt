@@ -11,4 +11,14 @@ class RangeFilter(
     val currency: String,
     var selectedMin: Int = min,
     var selectedMax: Int = max
-) : Filter(label, filterName, type)
+) : Filter(label, filterName, type){
+
+    override fun toString(): String {
+        return "${getFormattedRange("min", selectedMin)}&filters${getFormattedRange("max", selectedMax)}"
+    }
+
+    private fun getFormattedRange(item: String, selectedValue: Int): String{
+        return "[$filterName][$item]=${selectedValue}"
+    }
+
+}

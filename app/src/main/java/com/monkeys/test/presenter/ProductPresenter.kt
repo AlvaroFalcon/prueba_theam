@@ -3,6 +3,7 @@ package com.monkeys.test.presenter
 import com.monkeys.test.api.MagentoApiService
 import com.monkeys.test.model.Product
 import com.monkeys.test.model.SearchResultResponse
+import com.monkeys.test.model.filter.Filter
 import com.monkeys.test.model.filter.ProductFilter
 import com.monkeys.test.view.ProductListView
 import retrofit2.Call
@@ -20,6 +21,7 @@ class ProductPresenter(val productListView: ProductListView?) {
 
     fun retrieveProducts(productFilter: ProductFilter) {
         productListView?.networkOperationCallback?.showProgress()
+        val formattedFilters = getFormattedFilters(productFilter.availableFilters)
         MagentoApiService.create()
             .getProducts(
                 productFilter.storeId,
@@ -28,7 +30,8 @@ class ProductPresenter(val productListView: ProductListView?) {
                 productFilter.order?.orderDir?.value,
                 productFilter.text,
                 productFilter.page,
-                productFilter.limit
+                productFilter.limit,
+                formattedFilters
             )
             .enqueue(object: Callback<SearchResultResponse>{
                 override fun onResponse(
@@ -50,5 +53,11 @@ class ProductPresenter(val productListView: ProductListView?) {
                 }
 
             })
+    }
+
+    private fun getFormattedFilters(availableFilters: Array<Filter>?): Array<String>{
+        val formattedFilters = arrayListOf<String>()
+        availableFilters?.forEach { formattedFilters.add(it.toString()) }
+        return formattedFilters.toTypedArray()
     }
 }

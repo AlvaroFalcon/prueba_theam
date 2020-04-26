@@ -9,6 +9,6 @@ class RangeFilter(
     val min: Int,
     val max: Int,
     val currency: String,
-    var selectedMin: Int? = min,
-    var selectedMax: Int? = max
+    var selectedMin: Int = min,
+    var selectedMax: Int = max
 ) : Filter(label, filterName, type)

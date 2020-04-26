@@ -52,7 +52,8 @@ interface MagentoApiService{
                     @Query("dir") dir: String? = "",
                     @Query("with_text") text: String? = "",
                     @Query("page") page: Int,
-                    @Query("limit") limit: Int
+                    @Query("limit") limit: Int,
+                    @Query("filters") vararg filters: String
                     ): Call<SearchResultResponse>
 
 }

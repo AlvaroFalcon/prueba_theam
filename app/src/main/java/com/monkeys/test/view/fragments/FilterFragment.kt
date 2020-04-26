@@ -75,10 +75,10 @@ class FilterFragment : BaseFragment(), RangeBar.OnRangeBarChangeListener,
 
     private fun initListeners() {
         mView.order_by_spinner.onItemSelectedListener = this
-        /*mView.search_btn.setOnClickListener {
-            saveFilterChanges()
+        mView.search_btn.setOnClickListener {
+            saveFilters()
             activity?.finish()
-        }*/
+        }
     }
 
     private fun restoreOrderSetting() {

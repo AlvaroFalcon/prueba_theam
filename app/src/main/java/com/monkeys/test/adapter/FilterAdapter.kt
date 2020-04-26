@@ -86,6 +86,7 @@ class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
                     rightPinValue: String
                 ) {
                     updatePriceLabels(leftPinValue, rightPinValue, holder)
+                    updateSelectedValues(leftPinValue, rightPinValue, item)
                 }
 
                 override fun onTouchEnded(rangeBar: RangeBar?) {
@@ -97,6 +98,15 @@ class FilterAdapter : RecyclerView.Adapter<FilterAdapter.ViewHolder>() {
             })
 
         }
+    }
+
+    private fun updateSelectedValues(
+        leftPinValue: String,
+        rightPinValue: String,
+        item: RangeFilter
+    ) {
+        item.selectedMin = leftPinValue.toInt()
+        item.selectedMax = rightPinValue.toInt()
     }
 
     private fun updatePriceLabels(
